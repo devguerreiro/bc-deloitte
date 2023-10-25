@@ -45,3 +45,11 @@ def make_lesson_grade():
         return baker.prepare(LessonGrade, **kwargs)
 
     return factory
+
+
+@pytest.fixture()
+def populate_student():
+    def factory(quantity: int, *args, **kwargs) -> LessonGrade:
+        return baker.make(Student, **kwargs, _quantity=quantity)
+
+    return factory
