@@ -6,8 +6,11 @@ from gpapp.core.models.student import Student
 class LessonGrade(models.Model):
     lesson = models.ForeignKey("Lesson", on_delete=models.PROTECT)
     student = models.ForeignKey(Student, on_delete=models.PROTECT)
-    period = models.CharField(max_length=20, unique=True)
+    period = models.CharField(max_length=20)
     grades = models.JSONField(default="[]")
+
+    class Meta:
+        unique_together = ["lesson", "student", "period"]
 
     def __str__(self):
         return (
