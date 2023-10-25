@@ -1,5 +1,5 @@
 {
     "editor.fontFamily": "Consolas, monospace",
     "terminal.integrated.fontFamily": "Consolas, monospace",
-    "conventionalCommits.scopes": ["student", "teacher"]
+    "conventionalCommits.scopes": ["student", "teacher", "coordinator"]
 }
