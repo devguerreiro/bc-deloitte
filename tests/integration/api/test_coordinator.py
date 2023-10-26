@@ -1,57 +1,67 @@
 import pytest
 
 from gpapp.core.models.coordinator import Coordinator
+from gpapp.core.models.user import User
 
 
 @pytest.mark.django_db
-class TestCoordinatorr:
+class TestCoordinator:
     @staticmethod
-    def test_should_be_able_to_list_coordinators(client, populate_coordinator):
+    def test_should_be_able_to_list_coordinators(admin_client, populate_coordinator):
         # given
-        populate_coordinator(3)
+        populate_coordinator(quantity=3)
 
         url = "/api/v1/coordinator/"
 
         # when
-        response = client.get(url)
+        response = admin_client.get(url)
 
         # assert
         assert response.status_code == 200
+
         assert len(response.data) == 3
 
     @staticmethod
-    def test_should_be_able_to_retrieve_an_coordinator(client, populate_coordinator):
+    def test_should_be_able_to_retrieve_an_coordinator(
+        admin_client, populate_coordinator
+    ):
         # given
-        coordinator = populate_coordinator(1)[0]
+        coordinator = populate_coordinator()
 
         url = f"/api/v1/coordinator/{coordinator.id}/"
 
         # when
-        response = client.get(url)
+        response = admin_client.get(url)
 
         # assert
         assert response.status_code == 200
-        assert response.data["id"] == str(coordinator.id)
+
+        assert response.data["id"] == coordinator.id
         assert response.data["name"] == coordinator.name
         assert response.data["email"] == coordinator.email
         assert response.data["dob"] == coordinator.dob.strftime("%d/%m/%Y")
+        assert response.data["profile"] == User.Profile.COORDINATOR
+        assert response.data.get("password") is None
 
     @staticmethod
-    def test_should_be_able_to_delete_an_coordinator(client, populate_coordinator):
+    def test_should_be_able_to_delete_an_coordinator(
+        admin_client, populate_coordinator
+    ):
         # given
-        coordinator = populate_coordinator(1)[0]
+        coordinator = populate_coordinator()
 
         url = f"/api/v1/coordinator/{coordinator.id}/"
 
         # when
-        response = client.delete(url)
+        response = admin_client.delete(url)
 
         # assert
         assert response.status_code == 204
+
         assert Coordinator.objects.count() == 0
 
     @staticmethod
-    def test_should_be_able_to_create_an_coordinator(client, make_coordinator):
+    def test_should_be_able_to_create_an_coordinator(admin_client, make_coordinator):
         # given
         coordinator = make_coordinator()
 
@@ -61,19 +71,24 @@ class TestCoordinatorr:
             "name": coordinator.name,
             "email": coordinator.email,
             "dob": coordinator.dob.strftime("%d/%m/%Y"),
+            "password": coordinator.password,
+            "profile": User.Profile.COORDINATOR,
         }
 
         # when
-        response = client.post(url, data)
+        response = admin_client.post(url, data)
 
         # assert
         assert response.status_code == 201
+
         assert Coordinator.objects.count() == 1
 
     @staticmethod
-    def test_should_be_able_to_update_an_coordinator(client, populate_coordinator):
+    def test_should_be_able_to_update_an_coordinator(
+        admin_client, populate_coordinator
+    ):
         # given
-        coordinator = populate_coordinator(1)[0]
+        coordinator = populate_coordinator()
 
         url = f"/api/v1/coordinator/{coordinator.id}/"
 
@@ -84,7 +99,7 @@ class TestCoordinatorr:
         }
 
         # when
-        response = client.put(url, data, content_type="application/json")
+        response = admin_client.put(url, data)
 
         # assert
         assert response.status_code == 200

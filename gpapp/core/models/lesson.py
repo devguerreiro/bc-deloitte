@@ -4,8 +4,16 @@ from gpapp.core.models.student import Student
 
 
 class LessonGrade(models.Model):
-    lesson = models.ForeignKey("Lesson", on_delete=models.PROTECT)
-    student = models.ForeignKey(Student, on_delete=models.PROTECT)
+    lesson = models.ForeignKey(
+        "Lesson",
+        on_delete=models.PROTECT,
+        related_name="grades",
+    )
+    student = models.ForeignKey(
+        Student,
+        on_delete=models.PROTECT,
+        related_name="grades",
+    )
     grades = models.JSONField(default=list)
 
     class Meta:

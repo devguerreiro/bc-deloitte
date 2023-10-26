@@ -7,7 +7,9 @@ class TestStudent:
         assert hasattr(Student, "id")
         assert hasattr(Student, "name")
         assert hasattr(Student, "email")
+        assert hasattr(Student, "password")
         assert hasattr(Student, "dob")
+        assert hasattr(Student, "profile")
 
     @staticmethod
     def test_should_has_repr(make_student):
@@ -18,7 +20,7 @@ class TestStudent:
         output = repr(student)
 
         # act
-        assert output == student.name
+        assert output == f"{student.profile} | {student.name} - {student.email}"
 
     @staticmethod
     def test_should_has_str(make_student):
@@ -29,4 +31,4 @@ class TestStudent:
         output = str(student)
 
         # act
-        assert output == student.name
+        assert output == f"{student.profile} | {student.name} - {student.email}"

@@ -6,18 +6,19 @@ from gpapp.core.serializers.student import StudentReadSerializer
 
 
 class LessonGradeReadSerializer(serializers.Serializer):
-    id = serializers.CharField(read_only=True)
+    id = serializers.IntegerField(read_only=True)
     student = StudentReadSerializer()
     grades = serializers.JSONField(read_only=True)
 
 
 class LessonGradeWriteSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
     student = serializers.PrimaryKeyRelatedField(queryset=Student.objects.all())
     grades = serializers.JSONField()
 
 
 class LessonReadSerializer(serializers.Serializer):
-    id = serializers.CharField(read_only=True)
+    id = serializers.IntegerField(read_only=True)
     name = serializers.CharField(read_only=True)
     teachers_name = serializers.CharField(read_only=True)
     load = serializers.IntegerField(read_only=True)
@@ -33,7 +34,7 @@ class LessonWriteSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Lesson
-        fields = ["name", "teachers_name", "load", "students"]
+        fields = ["id", "name", "teachers_name", "load", "students"]
 
     def create(self, validated_data):
         students = validated_data.pop("students", [])

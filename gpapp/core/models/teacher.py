@@ -1,13 +1,16 @@
 from django.db import models
+from django.db.models.query import QuerySet
+
+from gpapp.core.models.user import User
 
 
-class Teacher(models.Model):
-    name = models.CharField(max_length=75)
-    email = models.EmailField(unique=True)
-    dob = models.DateField()
+class TeacherManager(models.Manager):
+    def get_queryset(self) -> QuerySet:
+        return super().get_queryset().filter(profile=User.Profile.TEACHER)
 
-    def __str__(self):
-        return self.name
 
-    def __repr__(self) -> str:
-        return str(self)
+class Teacher(User):
+    objects = TeacherManager()
+
+    class Meta:
+        proxy = True

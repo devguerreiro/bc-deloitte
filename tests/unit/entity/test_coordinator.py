@@ -7,7 +7,9 @@ class TestCoordinator:
         assert hasattr(Coordinator, "id")
         assert hasattr(Coordinator, "name")
         assert hasattr(Coordinator, "email")
+        assert hasattr(Coordinator, "password")
         assert hasattr(Coordinator, "dob")
+        assert hasattr(Coordinator, "profile")
 
     @staticmethod
     def test_should_has_repr(make_coordinator):
@@ -18,7 +20,10 @@ class TestCoordinator:
         output = repr(coordinator)
 
         # act
-        assert output == coordinator.name
+        assert (
+            output
+            == f"{coordinator.profile} | {coordinator.name} - {coordinator.email}"
+        )
 
     @staticmethod
     def test_should_has_str(make_coordinator):
@@ -29,4 +34,7 @@ class TestCoordinator:
         output = str(coordinator)
 
         # act
-        assert output == coordinator.name
+        assert (
+            output
+            == f"{coordinator.profile} | {coordinator.name} - {coordinator.email}"
+        )

@@ -6,3 +6,5 @@ from gpapp.core.serializers.user import UserWriteSerializer
 
 class UserViewSet(GenericViewSet, CreateModelMixin):
     serializer_class = UserWriteSerializer
+    permission_classes = []
+    authentication_classes = []
