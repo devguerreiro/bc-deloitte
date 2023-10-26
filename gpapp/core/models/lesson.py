@@ -6,7 +6,7 @@ from gpapp.core.models.student import Student
 class LessonGrade(models.Model):
     lesson = models.ForeignKey("Lesson", on_delete=models.PROTECT)
     student = models.ForeignKey(Student, on_delete=models.PROTECT)
-    grades = models.JSONField(default="[]")
+    grades = models.JSONField(default=list)
 
     class Meta:
         unique_together = ["lesson", "student"]
