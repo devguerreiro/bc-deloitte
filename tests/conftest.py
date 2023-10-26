@@ -69,3 +69,11 @@ def populate_coordinator():
         return baker.make(Coordinator, **kwargs, _quantity=quantity)
 
     return factory
+
+
+@pytest.fixture()
+def populate_lesson():
+    def factory(quantity: int, *args, **kwargs) -> Lesson:
+        return baker.make(Lesson, **kwargs, _quantity=quantity)
+
+    return factory

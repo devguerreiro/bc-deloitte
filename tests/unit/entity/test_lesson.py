@@ -52,7 +52,7 @@ class TestLessonGrade:
         # act
         assert (
             output
-            == f"{lesson_grade.lesson.name} - {lesson_grade.student.name} - {lesson_grade.period} | {lesson_grade.grades}"  # noqa
+            == f"{lesson_grade.lesson.name} - {lesson_grade.student.name} | {lesson_grade.grades}"  # noqa
         )
 
     @staticmethod
@@ -66,5 +66,5 @@ class TestLessonGrade:
         # act
         assert (
             output
-            == f"{lesson_grade.lesson.name} - {lesson_grade.student.name} - {lesson_grade.period} | {lesson_grade.grades}"  # noqa
+            == f"{lesson_grade.lesson.name} - {lesson_grade.student.name} | {lesson_grade.grades}"  # noqa
         )
