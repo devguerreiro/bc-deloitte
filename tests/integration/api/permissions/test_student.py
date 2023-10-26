@@ -4,24 +4,6 @@ import pytest
 @pytest.mark.django_db
 class TestStudentPermission:
     @staticmethod
-    def test_should_be_able_to_get_their_own_grades(
-        client,
-        populate_student,
-    ):
-        # given
-        student = populate_student()
-
-        url = f"/api/v1/student/{student.id}/grades/"
-
-        client.force_authenticate(student)
-
-        # when
-        response = client.get(url)
-
-        # assert
-        assert response.status_code == 200
-
-    @staticmethod
     def test_should_not_be_able_to_get_other_student_grades(
         client,
         populate_student,

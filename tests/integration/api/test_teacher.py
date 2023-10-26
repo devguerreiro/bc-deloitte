@@ -21,6 +21,13 @@ class TestTeacher:
 
         assert len(response.data) == 3
 
+        assert response.data[0].get("id") is not None
+        assert response.data[0].get("name") is not None
+        assert response.data[0].get("email") is not None
+        assert response.data[0].get("dob") is not None
+        assert response.data[0].get("profile") is not None
+        assert response.data[0].get("password") is None
+
     @staticmethod
     def test_should_be_able_to_retrieve_an_teacher(admin_client, populate_teacher):
         # given

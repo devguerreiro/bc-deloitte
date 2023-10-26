@@ -5,7 +5,7 @@ from gpapp.core.models.user import User
 
 class StudentPermission(BasePermission):
     def has_permission(self, request, view):
-        return (
+        return request.user.is_superuser or (
             request.user
             and request.user.profile == User.Profile.STUDENT
             and view.basename == "student"
@@ -17,5 +17,5 @@ class StudentPermission(BasePermission):
             ]
         )
 
-    def has_object_permission(self, request, view, obj):
-        return request.user == obj
+    def has_object_permission(self, request, _, obj):
+        return request.user.is_superuser or request.user == obj

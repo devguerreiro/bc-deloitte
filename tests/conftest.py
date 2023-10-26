@@ -123,3 +123,12 @@ def populate_lesson():
         return output if quantity > 1 else output[0]
 
     return factory
+
+
+@pytest.fixture()
+def populate_lesson_grade():
+    def factory(*args, quantity: int = 1, **kwargs) -> Lesson:
+        output = baker.make(LessonGrade, _quantity=quantity, **kwargs)
+        return output if quantity > 1 else output[0]
+
+    return factory

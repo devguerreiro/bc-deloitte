@@ -20,6 +20,12 @@ class TestLesson:
 
         assert len(response.data) == 3
 
+        assert response.data[0].get("id") is not None
+        assert response.data[0].get("name") is not None
+        assert response.data[0].get("teachers_name") is not None
+        assert response.data[0].get("load") is not None
+        assert response.data[0].get("students") is not None
+
     @staticmethod
     def test_should_be_able_to_retrieve_an_lesson(admin_client, populate_lesson):
         # given

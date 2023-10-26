@@ -21,6 +21,13 @@ class TestStudent:
 
         assert len(response.data) == 3
 
+        assert response.data[0].get("id") is not None
+        assert response.data[0].get("name") is not None
+        assert response.data[0].get("email") is not None
+        assert response.data[0].get("dob") is not None
+        assert response.data[0].get("profile") is not None
+        assert response.data[0].get("password") is None
+
     @staticmethod
     def test_should_be_able_to_retrieve_an_student(
         admin_client,
@@ -105,3 +112,28 @@ class TestStudent:
         assert student.name == data["name"]
         assert student.email == data["email"]
         assert student.dob.strftime("%d/%m/%Y") == data["dob"]
+
+    @staticmethod
+    def test_should_be_able_to_get_your_grades(
+        client, populate_student, populate_lesson_grade
+    ):
+        # given
+        student = populate_student(make_m2m=True)
+
+        populate_lesson_grade(student=student, quantity=5)
+
+        url = f"/api/v1/student/{student.id}/grades/"
+
+        client.force_authenticate(student)
+
+        # when
+        response = client.get(url)
+
+        # assert
+        assert response.status_code == 200
+
+        assert len(response.data) == 5
+
+        assert response.data[0].get("id") is not None
+        assert response.data[0].get("lesson") is not None
+        assert response.data[0].get("grades") is not None
