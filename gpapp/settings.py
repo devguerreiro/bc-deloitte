@@ -42,7 +42,18 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "gpapp.core",
     "rest_framework",
+    "rest_framework.authtoken",
 ]
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.TokenAuthentication",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "gpapp.core.permissions.student.StudentPermission",
+    ],
+    "TEST_REQUEST_DEFAULT_FORMAT": "json",
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
