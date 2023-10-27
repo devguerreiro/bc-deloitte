@@ -6,14 +6,14 @@ from gpapp.core.models.lesson import Lesson, LessonGrade
 @pytest.mark.django_db
 class TestLesson:
     @staticmethod
-    def test_should_be_able_to_list_lessons(admin_client, populate_lesson):
+    def test_should_be_able_to_list_lessons(staff_client, populate_lesson):
         # given
         populate_lesson(quantity=3)
 
         url = "/api/v1/lesson/"
 
         # when
-        response = admin_client.get(url)
+        response = staff_client.get(url)
 
         # assert
         assert response.status_code == 200
@@ -27,14 +27,14 @@ class TestLesson:
         assert response.data[0].get("students") is not None
 
     @staticmethod
-    def test_should_be_able_to_retrieve_an_lesson(admin_client, populate_lesson):
+    def test_should_be_able_to_retrieve_an_lesson(staff_client, populate_lesson):
         # given
         lesson = populate_lesson()
 
         url = f"/api/v1/lesson/{lesson.id}/"
 
         # when
-        response = admin_client.get(url)
+        response = staff_client.get(url)
 
         # assert
         assert response.status_code == 200
@@ -46,14 +46,14 @@ class TestLesson:
         assert response.data["students"] == []
 
     @staticmethod
-    def test_should_be_able_to_delete_an_lesson(admin_client, populate_lesson):
+    def test_should_be_able_to_delete_an_lesson(staff_client, populate_lesson):
         # given
         lesson = populate_lesson()
 
         url = f"/api/v1/lesson/{lesson.id}/"
 
         # when
-        response = admin_client.delete(url)
+        response = staff_client.delete(url)
 
         # assert
         assert response.status_code == 204
@@ -62,7 +62,7 @@ class TestLesson:
 
     @staticmethod
     def test_should_be_able_to_create_an_lesson(
-        admin_client, make_lesson, populate_teacher
+        staff_client, make_lesson, populate_teacher
     ):
         # given
         lesson = make_lesson()
@@ -77,7 +77,7 @@ class TestLesson:
         }
 
         # when
-        response = admin_client.post(url, data)
+        response = staff_client.post(url, data)
 
         # assert
         assert response.status_code == 201
@@ -86,7 +86,7 @@ class TestLesson:
 
     @staticmethod
     def test_should_be_able_to_create_an_lesson_with_students(
-        admin_client, make_lesson, populate_student, populate_teacher
+        staff_client, make_lesson, populate_student, populate_teacher
     ):
         # given
         student = populate_student()
@@ -108,7 +108,7 @@ class TestLesson:
         }
 
         # when
-        response = admin_client.post(url, data)
+        response = staff_client.post(url, data)
 
         # assert
         assert response.status_code == 201
@@ -118,7 +118,7 @@ class TestLesson:
 
     @staticmethod
     def test_should_be_able_to_update_an_lesson(
-        admin_client, populate_lesson, populate_teacher
+        staff_client, populate_lesson, populate_teacher
     ):
         # given
         lesson = populate_lesson()
@@ -133,7 +133,7 @@ class TestLesson:
         }
 
         # when
-        response = admin_client.put(url, data)
+        response = staff_client.put(url, data)
 
         # assert
         assert response.status_code == 200
@@ -145,7 +145,7 @@ class TestLesson:
 
     @staticmethod
     def test_should_be_able_to_update_an_lesson_with_students(
-        admin_client, populate_lesson, populate_student, populate_teacher
+        staff_client, populate_lesson, populate_student, populate_teacher
     ):
         # given
         student = populate_student()
@@ -167,7 +167,7 @@ class TestLesson:
         }
 
         # when
-        response = admin_client.put(url, data)
+        response = staff_client.put(url, data)
 
         # assert
         assert response.status_code == 200
@@ -183,7 +183,7 @@ class TestLesson:
 
     @staticmethod
     def test_should_be_able_to_update_the_student_grades(
-        admin_client, populate_lesson_grade
+        staff_client, populate_lesson_grade
     ):
         # given
         lesson_grade = populate_lesson_grade()
@@ -196,7 +196,7 @@ class TestLesson:
         }
 
         # when
-        response = admin_client.put(url, data)
+        response = staff_client.put(url, data)
 
         # assert
         assert response.status_code == 200

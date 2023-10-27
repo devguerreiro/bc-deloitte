@@ -15,13 +15,13 @@ def client():
 
 
 @pytest.fixture()
-def admin_user():
+def staff_user():
     return baker.prepare(User, is_staff=True)
 
 
 @pytest.fixture()
-def admin_client(client, admin_user):
-    client.force_authenticate(admin_user)
+def staff_client(client, staff_user):
+    client.force_authenticate(staff_user)
     return client
 
 

@@ -7,14 +7,14 @@ from gpapp.core.models.user import User
 @pytest.mark.django_db
 class TestCoordinator:
     @staticmethod
-    def test_should_be_able_to_list_coordinators(admin_client, populate_coordinator):
+    def test_should_be_able_to_list_coordinators(staff_client, populate_coordinator):
         # given
         populate_coordinator(quantity=3)
 
         url = "/api/v1/coordinator/"
 
         # when
-        response = admin_client.get(url)
+        response = staff_client.get(url)
 
         # assert
         assert response.status_code == 200
@@ -30,7 +30,7 @@ class TestCoordinator:
 
     @staticmethod
     def test_should_be_able_to_retrieve_an_coordinator(
-        admin_client, populate_coordinator
+        staff_client, populate_coordinator
     ):
         # given
         coordinator = populate_coordinator()
@@ -38,7 +38,7 @@ class TestCoordinator:
         url = f"/api/v1/coordinator/{coordinator.id}/"
 
         # when
-        response = admin_client.get(url)
+        response = staff_client.get(url)
 
         # assert
         assert response.status_code == 200
@@ -52,7 +52,7 @@ class TestCoordinator:
 
     @staticmethod
     def test_should_be_able_to_delete_an_coordinator(
-        admin_client, populate_coordinator
+        staff_client, populate_coordinator
     ):
         # given
         coordinator = populate_coordinator()
@@ -60,7 +60,7 @@ class TestCoordinator:
         url = f"/api/v1/coordinator/{coordinator.id}/"
 
         # when
-        response = admin_client.delete(url)
+        response = staff_client.delete(url)
 
         # assert
         assert response.status_code == 204
@@ -68,7 +68,7 @@ class TestCoordinator:
         assert Coordinator.objects.count() == 0
 
     @staticmethod
-    def test_should_be_able_to_create_an_coordinator(admin_client, make_coordinator):
+    def test_should_be_able_to_create_an_coordinator(staff_client, make_coordinator):
         # given
         coordinator = make_coordinator()
 
@@ -83,7 +83,7 @@ class TestCoordinator:
         }
 
         # when
-        response = admin_client.post(url, data)
+        response = staff_client.post(url, data)
 
         # assert
         assert response.status_code == 201
@@ -92,7 +92,7 @@ class TestCoordinator:
 
     @staticmethod
     def test_should_be_able_to_update_an_coordinator(
-        admin_client, populate_coordinator
+        staff_client, populate_coordinator
     ):
         # given
         coordinator = populate_coordinator()
@@ -106,7 +106,7 @@ class TestCoordinator:
         }
 
         # when
-        response = admin_client.put(url, data)
+        response = staff_client.put(url, data)
 
         # assert
         assert response.status_code == 200

@@ -7,14 +7,14 @@ from gpapp.core.models.user import User
 @pytest.mark.django_db
 class TestStudent:
     @staticmethod
-    def test_should_be_able_to_list_students(admin_client, populate_student):
+    def test_should_be_able_to_list_students(staff_client, populate_student):
         # given
         populate_student(quantity=3)
 
         url = "/api/v1/student/"
 
         # when
-        response = admin_client.get(url)
+        response = staff_client.get(url)
 
         # assert
         assert response.status_code == 200
@@ -30,7 +30,7 @@ class TestStudent:
 
     @staticmethod
     def test_should_be_able_to_retrieve_an_student(
-        admin_client,
+        staff_client,
         populate_student,
     ):
         # given
@@ -39,7 +39,7 @@ class TestStudent:
         url = f"/api/v1/student/{student.id}/"
 
         # when
-        response = admin_client.get(url)
+        response = staff_client.get(url)
 
         # assert
         assert response.status_code == 200
@@ -52,14 +52,14 @@ class TestStudent:
         assert response.data.get("password") is None
 
     @staticmethod
-    def test_should_be_able_to_delete_an_student(admin_client, populate_student):
+    def test_should_be_able_to_delete_an_student(staff_client, populate_student):
         # given
         student = populate_student()
 
         url = f"/api/v1/student/{student.id}/"
 
         # when
-        response = admin_client.delete(url)
+        response = staff_client.delete(url)
 
         # assert
         assert response.status_code == 204
@@ -67,7 +67,7 @@ class TestStudent:
         assert Student.objects.count() == 0
 
     @staticmethod
-    def test_should_be_able_to_create_an_student(admin_client, make_student):
+    def test_should_be_able_to_create_an_student(staff_client, make_student):
         # given
         student = make_student()
 
@@ -82,7 +82,7 @@ class TestStudent:
         }
 
         # when
-        response = admin_client.post(url, data)
+        response = staff_client.post(url, data)
 
         # assert
         assert response.status_code == 201
@@ -90,7 +90,7 @@ class TestStudent:
         assert Student.objects.count() == 1
 
     @staticmethod
-    def test_should_be_able_to_update_an_student(admin_client, populate_student):
+    def test_should_be_able_to_update_an_student(staff_client, populate_student):
         # given
         student = populate_student()
 
@@ -103,7 +103,7 @@ class TestStudent:
         }
 
         # when
-        response = admin_client.put(url, data)
+        response = staff_client.put(url, data)
 
         # assert
         assert response.status_code == 200
