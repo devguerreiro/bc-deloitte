@@ -1,11 +1,14 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAdminUser
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from gpapp.core.models.lesson import Lesson, LessonGrade
+from gpapp.core.permissions.coordinator import CoordinatorPermission
+from gpapp.core.permissions.teacher import TeacherPermission
 from gpapp.core.serializers.lesson import (
     LessonReadSerializer,
     LessonWriteSerializer,
@@ -17,6 +20,7 @@ class LessonViewSet(ModelViewSet):
     read_serializer = LessonReadSerializer
     write_serializer = LessonWriteSerializer
     queryset = Lesson.objects.all()
+    permission_classes = [TeacherPermission | CoordinatorPermission | IsAdminUser]
 
     def get_serializer_class(self):
         if self.action in ["list", "retrieve"]:

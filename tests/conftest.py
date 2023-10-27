@@ -16,7 +16,7 @@ def client():
 
 @pytest.fixture()
 def admin_user():
-    return baker.prepare(User, is_superuser=True)
+    return baker.prepare(User, is_staff=True)
 
 
 @pytest.fixture()

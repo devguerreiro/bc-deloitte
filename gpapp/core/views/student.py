@@ -1,10 +1,13 @@
 from rest_framework import status
 from rest_framework.decorators import action
+from rest_framework.permissions import IsAdminUser
 from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from gpapp.core.models.student import Student
+from gpapp.core.permissions.coordinator import CoordinatorPermission
+from gpapp.core.permissions.student import StudentPermission
 from gpapp.core.serializers.student import (
     StudentGradeReadSerializer,
     StudentReadSerializer,
@@ -16,6 +19,7 @@ class StudentViewSet(ModelViewSet):
     read_serializer = StudentReadSerializer
     write_serializer = StudentWriteSerializer
     queryset = Student.objects.all()
+    permission_classes = [StudentPermission | CoordinatorPermission | IsAdminUser]
 
     def get_serializer_class(self):
         if self.action in ["list", "retrieve"]:

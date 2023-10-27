@@ -1,3 +1,4 @@
+from rest_framework.permissions import IsAdminUser
 from rest_framework.viewsets import ModelViewSet
 
 from gpapp.core.models.coordinator import Coordinator
@@ -11,6 +12,7 @@ class CoordinatorViewSet(ModelViewSet):
     read_serializer = CoordinatorReadSerializer
     write_serializer = CoordinatorWriteSerializer
     queryset = Coordinator.objects.all()
+    permission_classes = [IsAdminUser]
 
     def get_serializer_class(self):
         if self.action in ["list", "retrieve"]:

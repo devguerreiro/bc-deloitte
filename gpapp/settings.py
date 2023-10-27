@@ -50,8 +50,7 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.TokenAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
-        "gpapp.core.permissions.student.StudentPermission",
-        "gpapp.core.permissions.teacher.TeacherPermission",
+        "rest_framework.permissions.IsAuthenticated",
     ],
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
 }
