@@ -118,7 +118,7 @@ class TestStudent:
         client, populate_student, populate_lesson_grade
     ):
         # given
-        student = populate_student(make_m2m=True)
+        student = populate_student()
 
         populate_lesson_grade(student=student, quantity=5)
 
