@@ -53,3 +53,10 @@ class LessonWriteSerializer(serializers.ModelSerializer):
                 lesson=instance, **student, defaults=student
             )
         return instance
+
+
+class StudentGradeWriteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LessonGrade
+        fields = ["id", "lesson", "student", "grades"]
+        read_only_fields = ["lesson"]

@@ -174,3 +174,26 @@ class TestLesson:
         lesson_grade = lesson.grades.first()
         assert lesson_grade.id == data["students"][0]["student"]
         assert lesson_grade.grades == data["students"][0]["grades"]
+
+    @staticmethod
+    def test_should_be_able_to_update_the_student_grades(
+        admin_client, populate_lesson_grade
+    ):
+        # given
+        lesson_grade = populate_lesson_grade()
+
+        url = f"/api/v1/lesson/{lesson_grade.lesson.id}/student_grades/"
+
+        data = {
+            "student": lesson_grade.student.id,
+            "grades": [10, 10, 10, 10],
+        }
+
+        # when
+        response = admin_client.put(url, data)
+
+        # assert
+        assert response.status_code == 200
+
+        updated_lesson_grade = LessonGrade.objects.get(id=lesson_grade.id)
+        assert updated_lesson_grade.grades == data["grades"]
