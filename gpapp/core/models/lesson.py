@@ -1,6 +1,7 @@
 from django.db import models
 
 from gpapp.core.models.student import Student
+from gpapp.core.models.teacher import Teacher
 
 
 class LessonGrade(models.Model):
@@ -28,10 +29,12 @@ class LessonGrade(models.Model):
 
 class Lesson(models.Model):
     name = models.CharField(max_length=75, unique=True)
-    teachers_name = models.CharField(max_length=75)
+    teacher = models.ForeignKey(
+        Teacher, on_delete=models.PROTECT, related_name="lessons_as_teacher"
+    )
     load = models.PositiveIntegerField()
     students = models.ManyToManyField(
-        Student, through=LessonGrade, related_name="lessons"
+        Student, through=LessonGrade, related_name="lessons_as_student"
     )
 
     def __str__(self):

@@ -22,7 +22,7 @@ class TestLesson:
 
         assert response.data[0].get("id") is not None
         assert response.data[0].get("name") is not None
-        assert response.data[0].get("teachers_name") is not None
+        assert response.data[0].get("teacher") is not None
         assert response.data[0].get("load") is not None
         assert response.data[0].get("students") is not None
 
@@ -41,7 +41,7 @@ class TestLesson:
 
         assert response.data["id"] == lesson.id
         assert response.data["name"] == lesson.name
-        assert response.data["teachers_name"] == lesson.teachers_name
+        assert response.data["teacher"]["id"] == lesson.teacher.id
         assert response.data["load"] == lesson.load
         assert response.data["students"] == []
 
@@ -61,15 +61,18 @@ class TestLesson:
         assert Lesson.objects.count() == 0
 
     @staticmethod
-    def test_should_be_able_to_create_an_lesson(admin_client, make_lesson):
+    def test_should_be_able_to_create_an_lesson(
+        admin_client, make_lesson, populate_teacher
+    ):
         # given
         lesson = make_lesson()
+        teacher = populate_teacher()
 
         url = "/api/v1/lesson/"
 
         data = {
             "name": lesson.name,
-            "teachers_name": lesson.teachers_name,
+            "teacher": teacher.id,
             "load": lesson.load,
         }
 
@@ -83,17 +86,18 @@ class TestLesson:
 
     @staticmethod
     def test_should_be_able_to_create_an_lesson_with_students(
-        admin_client, make_lesson, populate_student
+        admin_client, make_lesson, populate_student, populate_teacher
     ):
         # given
         student = populate_student()
+        teacher = populate_teacher()
         lesson = make_lesson()
 
         url = "/api/v1/lesson/"
 
         data = {
             "name": lesson.name,
-            "teachers_name": lesson.teachers_name,
+            "teacher": teacher.id,
             "load": lesson.load,
             "students": [
                 {
@@ -113,15 +117,18 @@ class TestLesson:
         assert LessonGrade.objects.count() == 1
 
     @staticmethod
-    def test_should_be_able_to_update_an_lesson(admin_client, populate_lesson):
+    def test_should_be_able_to_update_an_lesson(
+        admin_client, populate_lesson, populate_teacher
+    ):
         # given
         lesson = populate_lesson()
+        teacher = populate_teacher()
 
         url = f"/api/v1/lesson/{lesson.id}/"
 
         data = {
             "name": lesson.name,
-            "teachers_name": lesson.teachers_name,
+            "teacher": teacher.id,
             "load": lesson.load,
         }
 
@@ -133,24 +140,23 @@ class TestLesson:
 
         lesson = Lesson.objects.get(pk=lesson.id)
         assert lesson.name == data["name"]
-        assert lesson.teachers_name == data["teachers_name"]
+        assert teacher.id == data["teacher"]
         assert lesson.load == data["load"]
 
     @staticmethod
     def test_should_be_able_to_update_an_lesson_with_students(
-        admin_client,
-        populate_lesson,
-        populate_student,
+        admin_client, populate_lesson, populate_student, populate_teacher
     ):
         # given
         student = populate_student()
         lesson = populate_lesson()
+        teacher = populate_teacher()
 
         url = f"/api/v1/lesson/{lesson.id}/"
 
         data = {
             "name": lesson.name,
-            "teachers_name": lesson.teachers_name,
+            "teacher": teacher.id,
             "load": lesson.load,
             "students": [
                 {
@@ -168,7 +174,7 @@ class TestLesson:
 
         lesson = Lesson.objects.get(pk=lesson.id)
         assert lesson.name == data["name"]
-        assert lesson.teachers_name == data["teachers_name"]
+        assert teacher.id == data["teacher"]
         assert lesson.load == data["load"]
 
         lesson_grade = lesson.grades.first()

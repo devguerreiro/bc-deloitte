@@ -6,7 +6,7 @@ class TestLesson:
     def test_should_has_attributes():
         assert hasattr(Lesson, "id")
         assert hasattr(Lesson, "name")
-        assert hasattr(Lesson, "teachers_name")
+        assert hasattr(Lesson, "teacher")
         assert hasattr(Lesson, "load")
         assert hasattr(Lesson, "students")
 

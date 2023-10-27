@@ -3,6 +3,7 @@ from rest_framework import serializers
 from gpapp.core.models.lesson import Lesson, LessonGrade
 from gpapp.core.models.student import Student
 from gpapp.core.serializers.student import StudentReadSerializer
+from gpapp.core.serializers.teacher import TeacherReadSerializer
 
 
 class LessonGradeReadSerializer(serializers.Serializer):
@@ -20,7 +21,7 @@ class LessonGradeWriteSerializer(serializers.Serializer):
 class LessonReadSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     name = serializers.CharField(read_only=True)
-    teachers_name = serializers.CharField(read_only=True)
+    teacher = TeacherReadSerializer()
     load = serializers.IntegerField(read_only=True)
     students = LessonGradeReadSerializer(many=True)
 
@@ -34,7 +35,7 @@ class LessonWriteSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Lesson
-        fields = ["id", "name", "teachers_name", "load", "students"]
+        fields = ["id", "name", "teacher", "load", "students"]
 
     def create(self, validated_data):
         students = validated_data.pop("students", [])
