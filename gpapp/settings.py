@@ -51,6 +51,7 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_PERMISSION_CLASSES": [
         "gpapp.core.permissions.student.StudentPermission",
+        "gpapp.core.permissions.teacher.TeacherPermission",
     ],
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
 }

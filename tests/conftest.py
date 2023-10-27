@@ -20,11 +20,6 @@ def admin_user():
 
 
 @pytest.fixture()
-def student_user():
-    return baker.prepare(Student, profile=User.Profile.STUDENT)
-
-
-@pytest.fixture()
 def admin_client(client, admin_user):
     client.force_authenticate(admin_user)
     return client
