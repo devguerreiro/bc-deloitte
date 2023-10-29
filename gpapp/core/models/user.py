@@ -1,18 +1,5 @@
-from typing import Any
-
 from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.models import UserManager as BaseUserManager
 from django.db import models
-
-
-class UserManager(BaseUserManager):
-    def create_user(self, email: str, password: str, **extra_fields: Any) -> Any:
-        return super().create_user(email, email, password, **extra_fields)
-
-    def create_superuser(
-        self, email: str, password: str, **extra_fields: Any
-    ) -> "User":
-        return super().create_superuser(email, email, password, **extra_fields)
 
 
 class User(AbstractUser):
@@ -29,10 +16,7 @@ class User(AbstractUser):
         default=Profile.STUDENT,
     )
 
-    USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = []
-
-    objects = UserManager()
+    REQUIRED_FIELDS = ["email", "dob"]
 
     def __str__(self):
         return f"{self.profile} | {self.name} - {self.email}"

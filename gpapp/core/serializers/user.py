@@ -36,8 +36,12 @@ class UserWriteSerializer(serializers.ModelSerializer):
         super().__init__(instance, data, **kwargs)
 
     def create(self, validated_data):
-        return User.objects.create_user(**validated_data)
+        return User.objects.create_user(
+            **validated_data, username=validated_data["email"]
+        )
 
     def update(self, instance, validated_data):
-        User.objects.filter(pk=instance.id).update(**validated_data)
+        User.objects.filter(pk=instance.id).update(
+            **validated_data, username=validated_data["email"]
+        )
         return instance
