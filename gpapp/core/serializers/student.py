@@ -1,5 +1,6 @@
 from rest_framework import serializers
 
+from gpapp.core.models.user import User
 from gpapp.core.serializers.user import UserReadSerializer, UserWriteSerializer
 
 
@@ -8,14 +9,14 @@ class StudentReadSerializer(UserReadSerializer):
 
 
 class StudentWriteSerializer(UserWriteSerializer):
-    pass
+    def create(self, validated_data):
+        validated_data["profile"] = User.Profile.STUDENT
+        return super().create(validated_data)
 
 
 class StudentLessonReadSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
     name = serializers.CharField(read_only=True)
-    teachers_name = serializers.CharField(read_only=True)
-    load = serializers.IntegerField(read_only=True)
 
 
 class StudentGradeReadSerializer(serializers.Serializer):

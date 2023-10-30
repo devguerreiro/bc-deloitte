@@ -22,6 +22,7 @@ class UserWriteSerializer(serializers.ModelSerializer):
             "dob",
             "profile",
         ]
+        read_only_fields = ["profile"]
         write_only_fields = ["password"]
         extra_kwargs = {
             "dob": {

@@ -7,6 +7,7 @@ class User(AbstractUser):
         STUDENT = 0, "Estudante"
         TEACHER = 1, "Professor"
         COORDINATOR = 2, "Coordenador"
+        ADMIN = 3, "Administrador"
 
     name = models.CharField(max_length=75)
     email = models.EmailField(unique=True)
@@ -16,7 +17,8 @@ class User(AbstractUser):
         default=Profile.STUDENT,
     )
 
-    REQUIRED_FIELDS = ["email", "dob"]
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["username", "name", "dob", "profile"]
 
     def __str__(self):
         return f"{self.profile} | {self.name} - {self.email}"

@@ -16,12 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
-from rest_framework.authtoken.views import obtain_auth_token
 
 from gpapp.core.route import router as core_router
+from gpapp.core.views.auth import AuthToken
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/v1/", include(core_router.urls)),
-    path("auth/", obtain_auth_token),
+    path("auth/", AuthToken.as_view()),
 ]
