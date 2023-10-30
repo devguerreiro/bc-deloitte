@@ -26,6 +26,13 @@ class LessonReadSerializer(serializers.Serializer):
     students = LessonGradeReadSerializer(many=True)
 
 
+class TeacherLessonReadSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
+    name = serializers.CharField(read_only=True)
+    load = serializers.IntegerField(read_only=True)
+    students = LessonGradeReadSerializer(source="grades", many=True)
+
+
 class LessonWriteSerializer(serializers.ModelSerializer):
     students = LessonGradeWriteSerializer(
         many=True,

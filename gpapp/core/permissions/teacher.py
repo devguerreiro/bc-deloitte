@@ -15,7 +15,10 @@ class TeacherPermission(BasePermission):
                     view.basename == "lesson"
                     and view.action in ["list", "retrieve", "student_grades"]
                 )
-                or (view.basename == "teacher" and view.action == "retrieve")
+                or (
+                    view.basename == "teacher"
+                    and view.action in ["retrieve", "lessons"]
+                )
             )
         )
 
