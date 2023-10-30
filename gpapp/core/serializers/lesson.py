@@ -23,7 +23,7 @@ class LessonReadSerializer(serializers.Serializer):
     name = serializers.CharField(read_only=True)
     teacher = TeacherReadSerializer()
     load = serializers.IntegerField(read_only=True)
-    students = LessonGradeReadSerializer(many=True)
+    students = LessonGradeReadSerializer(source="grades", many=True)
 
 
 class TeacherLessonReadSerializer(serializers.Serializer):
@@ -67,4 +67,5 @@ class StudentGradeWriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = LessonGrade
         fields = ["id", "lesson", "student", "grades"]
-        read_only_fields = ["lesson"]
+        read_only_fields = ["lesson", "student"]
+        extra_kwargs = {"grades": {"required": True}}

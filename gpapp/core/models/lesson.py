@@ -4,6 +4,10 @@ from gpapp.core.models.student import Student
 from gpapp.core.models.teacher import Teacher
 
 
+def get_default_grades():
+    return [0, 0, 0, 0]
+
+
 class LessonGrade(models.Model):
     lesson = models.ForeignKey(
         "Lesson",
@@ -15,7 +19,7 @@ class LessonGrade(models.Model):
         on_delete=models.PROTECT,
         related_name="grades",
     )
-    grades = models.JSONField(default=list)
+    grades = models.JSONField(default=get_default_grades)
 
     class Meta:
         unique_together = ["lesson", "student"]

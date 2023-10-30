@@ -32,7 +32,12 @@ class LessonViewSet(ModelViewSet):
     @action(detail=True, methods=["PUT"])
     def student_grades(self, request: Request, pk=None):
         lesson = self.get_object()
-        lesson_grade = get_object_or_404(LessonGrade, lesson=lesson)
+        student = request.data.pop("student", None)
+        lesson_grade = get_object_or_404(
+            LessonGrade,
+            lesson=lesson,
+            student_id=student,
+        )
 
         serializer = StudentGradeWriteSerializer(
             instance=lesson_grade, data=request.data

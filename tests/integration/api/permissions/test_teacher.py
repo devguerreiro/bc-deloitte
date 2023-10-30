@@ -421,4 +421,4 @@ class TestLessonPermission:
         response = client.put(url, data={})
 
         # assert
-        assert response.status_code == 400
+        assert response.status_code == 404

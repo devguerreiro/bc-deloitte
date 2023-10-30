@@ -273,16 +273,15 @@ class TestLessonPermission:
 
     @staticmethod
     def test_should_be_able_to_update_the_student_grades(
-        staff_client, populate_lesson, populate_lesson_grade
+        staff_client, populate_lesson_grade
     ):
         # given
-        lesson = populate_lesson()
-        populate_lesson_grade(lesson=lesson)
+        lesson_grade = populate_lesson_grade()
 
-        url = f"/api/v1/lesson/{lesson.id}/student_grades/"
+        url = f"/api/v1/lesson/{lesson_grade.lesson.id}/student_grades/"
 
         # when
         response = staff_client.put(url, data={})
 
         # assert
-        assert response.status_code == 400
+        assert response.status_code == 404

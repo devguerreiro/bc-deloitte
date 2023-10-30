@@ -183,15 +183,16 @@ class TestLesson:
 
     @staticmethod
     def test_should_be_able_to_update_the_student_grades(
-        staff_client, populate_lesson_grade
+        staff_client, populate_lesson_grade, populate_lesson
     ):
         # given
-        lesson_grade = populate_lesson_grade()
+        lesson = populate_lesson()
+        lesson_grade = populate_lesson_grade(lesson=lesson, quantity=2)
 
-        url = f"/api/v1/lesson/{lesson_grade.lesson.id}/student_grades/"
+        url = f"/api/v1/lesson/{lesson_grade[1].lesson.id}/student_grades/"
 
         data = {
-            "student": lesson_grade.student.id,
+            "student": lesson_grade[1].student.id,
             "grades": [10, 10, 10, 10],
         }
 
@@ -201,5 +202,5 @@ class TestLesson:
         # assert
         assert response.status_code == 200
 
-        updated_lesson_grade = LessonGrade.objects.get(id=lesson_grade.id)
+        updated_lesson_grade = LessonGrade.objects.get(id=lesson_grade[1].id)
         assert updated_lesson_grade.grades == data["grades"]
