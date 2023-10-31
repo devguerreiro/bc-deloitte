@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "rest_framework.authtoken",
+    "drf_spectacular",
     "corsheaders",
     "gpapp.core",
 ]
@@ -58,6 +59,14 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAdminUser",
     ],
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "GPAPP API",
+    "DESCRIPTION": "A melhor universidade do mundo",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
 }
 
 MIDDLEWARE = [

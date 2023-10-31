@@ -11,6 +11,7 @@ class CoordinatorViewSet(ModelViewSet):
     read_serializer = CoordinatorReadSerializer
     write_serializer = CoordinatorWriteSerializer
     queryset = Coordinator.objects.all()
+    http_method_names = ["get", "post", "put", "delete"]
 
     def get_serializer_class(self):
         if self.action in ["list", "retrieve"]:

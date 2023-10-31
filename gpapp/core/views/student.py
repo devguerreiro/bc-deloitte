@@ -1,3 +1,4 @@
+from drf_spectacular.utils import OpenApiExample, extend_schema
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser
@@ -20,6 +21,7 @@ class StudentViewSet(ModelViewSet):
     write_serializer = StudentWriteSerializer
     queryset = Student.objects.all()
     permission_classes = [StudentPermission | CoordinatorPermission | IsAdminUser]
+    http_method_names = ["get", "post", "put", "delete"]
 
     def get_serializer_class(self):
         if self.action in ["list", "retrieve"]:
@@ -28,6 +30,25 @@ class StudentViewSet(ModelViewSet):
             return self.write_serializer
         raise NotImplementedError("Serializer was not defined")
 
+    @extend_schema(
+        responses=[StudentGradeReadSerializer],
+        examples=[
+            OpenApiExample(
+                name="exemplo",
+                response_only=True,
+                value=[
+                    {
+                        "id": 1,
+                        "lesson": {
+                            "id": 1,
+                            "name": "Foo",
+                        },
+                        "grades": [10, 10, 10, 10],
+                    }
+                ],
+            ),
+        ],
+    )
     @action(detail=True)
     def grades(self, request: Request, pk: int):
         student = self.get_object()

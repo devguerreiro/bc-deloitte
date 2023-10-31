@@ -16,6 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 from gpapp.core.route import router as core_router
 from gpapp.core.views.auth import AuthToken
@@ -24,4 +25,11 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/v1/", include(core_router.urls)),
     path("auth/", AuthToken.as_view()),
+    path("api/v1/schema/", SpectacularAPIView.as_view(), name="schema"),
+    # Optional UI:
+    path(
+        "api/v1/schema/swagger-ui/",
+        SpectacularSwaggerView.as_view(url_name="schema"),
+        name="swagger-ui",
+    ),
 ]

@@ -67,5 +67,5 @@ class StudentGradeWriteSerializer(serializers.ModelSerializer):
     class Meta:
         model = LessonGrade
         fields = ["id", "lesson", "student", "grades"]
-        read_only_fields = ["lesson", "student"]
+        read_only_fields = ["lesson"]
         extra_kwargs = {"grades": {"required": True}}
