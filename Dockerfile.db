@@ -1,0 +1,8 @@
+FROM mcr.microsoft.com/mssql/server:2022-latest
+
+WORKDIR /usr/config
+
+# Bundle config source
+COPY setup.sql entrypoint.db.sh configure-db.sh /usr/config/
+
+ENTRYPOINT ["./entrypoint.db.sh"]

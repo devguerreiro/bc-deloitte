@@ -21,14 +21,19 @@ services:
             - 8000:8000
         restart: always
         depends_on:
-            - deloitte_db
+            deloitte_db:
+                condition: service_healthy
         entrypoint: ./entrypoint.sh
 
     deloitte_db:
         container_name: deloitte_db
-        image: mcr.microsoft.com/mssql/server:2022-latest
+        build:
+            context: .
+            dockerfile: Dockerfile.db
+        image: deloitte_db
         environment:
             - ACCEPT_EULA=Y
+            - MSSQL_DB_NAME=gpapp
             - MSSQL_SA_PASSWORD=h4Gl*IdRO+
             - MSSQL_PID=Developer
         networks:
@@ -36,6 +41,11 @@ services:
         ports:
             - 1433:1433
         restart: always
+        healthcheck:
+            test: "/opt/mssql-tools/bin/sqlcmd -h -1 -t 1 -U sa -P h4Gl*IdRO+ -Q 'SET NOCOUNT ON; Select SUM(state) from sys.databases'"
+            interval: 5s
+            timeout: 5s
+            retries: 5
         volumes:
             - db_volume:/var/opt/mssql
 
