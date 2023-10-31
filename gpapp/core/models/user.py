@@ -17,6 +17,10 @@ class User(AbstractUser):
         default=Profile.STUDENT,
     )
 
+    class Meta:
+        verbose_name = "Usuario"
+        verbose_name_plural = "Usuarios"
+
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username", "name", "dob", "profile"]
 

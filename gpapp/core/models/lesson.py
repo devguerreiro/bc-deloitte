@@ -22,6 +22,8 @@ class LessonGrade(models.Model):
     grades = models.JSONField(default=get_default_grades)
 
     class Meta:
+        verbose_name = "Disciplina Notas Aluno"
+        verbose_name_plural = "Disciplinas Notas Alunos"
         unique_together = ["lesson", "student"]
 
     def __str__(self):
@@ -40,6 +42,10 @@ class Lesson(models.Model):
     students = models.ManyToManyField(
         Student, through=LessonGrade, related_name="lessons_as_student"
     )
+
+    class Meta:
+        verbose_name = "Disciplina"
+        verbose_name_plural = "Disciplinas"
 
     def __str__(self):
         return self.name

@@ -1,0 +1,46 @@
+version: "3"
+services:
+    deloitte_backend:
+        container_name: deloitte_backend
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: deloitte_backend
+        environment:
+            - DJANGO_SECRET_KEY=some_secret_key
+            - DJANGO_SUPERUSER_USERNAME=admin
+            - DJANGO_SUPERUSER_PASSWORD=admin
+            - DJANGO_DB_NAME=gpapp
+            - DJANGO_DB_USER=sa
+            - DJANGO_DB_PASS=h4Gl*IdRO+
+            - DJANGO_DB_HOST=deloitte_db
+            - DJANGO_DB_PORT=1433
+        networks:
+            - deloitte_network
+        ports:
+            - 8000:8000
+        restart: always
+        depends_on:
+            - deloitte_db
+        entrypoint: ./entrypoint.sh
+
+    deloitte_db:
+        container_name: deloitte_db
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        environment:
+            - ACCEPT_EULA=Y
+            - MSSQL_SA_PASSWORD=h4Gl*IdRO+
+            - MSSQL_PID=Developer
+        networks:
+            - deloitte_network
+        ports:
+            - 1433:1433
+        restart: always
+        volumes:
+            - db_volume:/var/opt/mssql
+
+networks:
+    deloitte_network:
+
+volumes:
+    db_volume:
