@@ -34,10 +34,8 @@ class TeacherLessonReadSerializer(serializers.Serializer):
 
 
 class LessonWriteSerializer(serializers.ModelSerializer):
-    students = LessonGradeWriteSerializer(
-        many=True,
-        write_only=True,
-        required=False,
+    students = serializers.PrimaryKeyRelatedField(
+        queryset=Student.objects.all(), many=True, required=False
     )
 
     class Meta:
@@ -49,7 +47,7 @@ class LessonWriteSerializer(serializers.ModelSerializer):
         lesson = Lesson.objects.create(**validated_data)
         if students:
             LessonGrade.objects.bulk_create(
-                [LessonGrade(lesson=lesson, **student) for student in students]
+                [LessonGrade(lesson=lesson, student=student) for student in students]
             )
         return lesson
 
@@ -58,7 +56,7 @@ class LessonWriteSerializer(serializers.ModelSerializer):
         Lesson.objects.filter(id=instance.id).update(**validated_data)
         for student in students:
             LessonGrade.objects.update_or_create(
-                lesson=instance, **student, defaults=student
+                lesson=instance, student=student, defaults={"student": student}
             )
         return instance
 

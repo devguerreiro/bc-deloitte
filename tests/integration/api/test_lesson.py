@@ -99,12 +99,7 @@ class TestLesson:
             "name": lesson.name,
             "teacher": teacher.id,
             "load": lesson.load,
-            "students": [
-                {
-                    "student": student.id,
-                    "grades": [10, 8.5, 7, 9],
-                }
-            ],
+            "students": [student.id],
         }
 
         # when
@@ -158,12 +153,7 @@ class TestLesson:
             "name": lesson.name,
             "teacher": teacher.id,
             "load": lesson.load,
-            "students": [
-                {
-                    "student": student.id,
-                    "grades": [10, 8.5, 7, 9],
-                }
-            ],
+            "students": [student.id],
         }
 
         # when
@@ -178,8 +168,7 @@ class TestLesson:
         assert lesson.load == data["load"]
 
         lesson_grade = lesson.grades.first()
-        assert lesson_grade.id == data["students"][0]["student"]
-        assert lesson_grade.grades == data["students"][0]["grades"]
+        assert lesson_grade.student.id == data["students"][0]
 
     @staticmethod
     def test_should_be_able_to_update_the_student_grades(
